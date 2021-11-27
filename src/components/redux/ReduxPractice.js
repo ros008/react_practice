@@ -1,7 +1,8 @@
 import React from "react";
+import CounterContainer from "./CounterContainer";
 
 const ReduxPractice = () => {
-  return <div>ReduxPractice</div>;
+  return <CounterContainer />;
 };
 
 export default ReduxPractice;
