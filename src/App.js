@@ -1,10 +1,12 @@
 import React from "react";
-import { Route, Routes } from "react-router";
-import { Link } from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 import RenderingBasic from "./components/renderingBasic/rendering";
 import Rerendering from "./components/rerendering/Rerendering";
 import UseReducer from "./components/useReducer/UseReducer";
 import ReduxPractice from "./components/redux/ReduxPractice";
+import ReduxModule from "./components/reduxModule/ReduxModule";
+import PostListPage from "./components/reduxModule/PostListPage";
+import PostPage from "./components/reduxModule/PostPage";
 
 function App() {
   return (
@@ -22,12 +24,21 @@ function App() {
         <li>
           <Link to="/redux">Redux</Link>
         </li>
+        <li>
+          <Link to="/reduxModule">ReduxModule</Link>
+        </li>
+        <li>
+          <Link to="/post">ReduxModule2</Link>
+        </li>
       </ul>
       <Routes>
         <Route path="/aboutRendering" element={<RenderingBasic />} />
         <Route path="/aboutRerendering" element={<Rerendering />} />
         <Route path="/useReducer" element={<UseReducer />} />
         <Route path="/redux" element={<ReduxPractice />} />
+        <Route path="/reduxModule" element={<ReduxModule />} />
+        <Route path="/post" element={<PostListPage />} />
+        <Route path="/post/:id" element={<PostPage />} />
       </Routes>
     </div>
   );

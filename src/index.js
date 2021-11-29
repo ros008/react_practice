@@ -5,18 +5,28 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import rootReducer from "./modules";
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
+import myLogger from "./middlewares/myLogger";
+import logger from "redux-logger";
+import ReduxThunk from "redux-thunk";
 
-const store = createStore(rootReducer, composeWithDevTools());
+// react dev tools 활성화
+// const store = createStore(rootReducer, composeWithDevTools());
+
+// 미들웨어를 스토어에 적용
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(ReduxThunk, logger))
+);
 
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
+  <BrowserRouter>
+    <Provider store={store}>
       <App />
-    </BrowserRouter>
-  </Provider>,
+    </Provider>
+  </BrowserRouter>,
   document.getElementById("root")
 );
 
