@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+import { Router, BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -11,6 +11,9 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import myLogger from "./middlewares/myLogger";
 import logger from "redux-logger";
 import ReduxThunk from "redux-thunk";
+import { createBrowserHistory } from "history";
+
+const customHistory = createBrowserHistory();
 
 // react dev tools 활성화
 // const store = createStore(rootReducer, composeWithDevTools());
@@ -18,7 +21,12 @@ import ReduxThunk from "redux-thunk";
 // 미들웨어를 스토어에 적용
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(ReduxThunk, logger))
+  composeWithDevTools(
+    applyMiddleware(
+      ReduxThunk.withExtraArgument({ history: customHistory }),
+      logger
+    )
+  )
 );
 
 ReactDOM.render(

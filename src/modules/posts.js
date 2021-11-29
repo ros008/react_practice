@@ -3,6 +3,8 @@ import {
   createPromiseThunk,
   handleAsyncActions,
   reducerUtils,
+  createPromiseThunkById,
+  handleAsyncActionsById,
 } from "../lib/asyncUtils";
 
 // Action type
@@ -13,6 +15,8 @@ const GET_POSTS_ERROR = "GET_POSTS_ERROR";
 const GET_POST = "GET_POST";
 const GET_POST_SUCCESS = "GET_POST_SUCCESS";
 const GET_POST_ERROR = "GET_POST_ERROR";
+
+const CLEAR_POST = "CLEAR_POST";
 
 /*
 export const getPosts = () => async (dispatch) => {
@@ -52,11 +56,18 @@ const initialState = {
 
 // 반복되는 코드 함수화하여 리덕스 모듈 리팩토링하기
 export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
-export const getPost = createPromiseThunk(GET_POST, postsAPI.getPostById);
+export const getPost = createPromiseThunkById(GET_POST, postsAPI.getPostById);
+export const clearPost = () => ({ type: CLEAR_POST });
+
+export const goToHome =
+  () =>
+  (dispatch, getState, { history }) => {
+    history.push("/post");
+  };
 
 const initialState = {
   posts: reducerUtils.initial(),
-  post: reducerUtils.initial(),
+  post: {},
 };
 
 /*
@@ -103,12 +114,17 @@ export default function posts(state = initialState, action) {
     case GET_POSTS:
     case GET_POSTS_SUCCESS:
     case GET_POSTS_ERROR:
-      return handleAsyncActions(GET_POSTS, "posts")(state, action);
+      return handleAsyncActions(GET_POSTS, "posts", true)(state, action);
     case GET_POST:
     case GET_POST_SUCCESS:
     case GET_POST_ERROR:
-      const postReducer = handleAsyncActions(GET_POST, "post");
+      const postReducer = handleAsyncActionsById(GET_POST, "post", true);
       return postReducer(state, action);
+    case CLEAR_POST:
+      return {
+        ...state,
+        post: reducerUtils.initial(),
+      };
     default:
       return state;
   }
